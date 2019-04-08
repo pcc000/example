@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <jmxConfigurator />
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -[%tnSeq]%msg%n</pattern>
+        </layout>
+    </appender>
+    <logger name="com.tiefan.fbs.fsp.client.message" level="error"/>
+    <logger name="com.tiefan.fbs.fdg" level="info" />
+    <logger name="com.tiefan.fbs.fdg.monitor" level="warn" />
+    <logger name="com.tiefan.fbs.fsp" level="info" />
+    <logger name="com.tiefan.fbs.fsp.monitor" level="warn" />
+    <logger name="com.tiefan.keel" level="debug" />
+    <logger name="org.apache.curator" level="warn" />
+    <logger name="org.apache.zookeeper" level="warn" />
+
+    <logger name="com.tiefan.cps" level="debug" />
+    <logger name="com.tiefan.cps.mapper" level="debug" />
+
+
+    <root level="WARN">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>

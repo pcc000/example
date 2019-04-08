@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jms="http://www.springframework.org/schema/jms" xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+	http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd
+	http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <bean id="logAspect" class="com.tiefan.rct.pbs.framework.aop.log.ActionLogAspect">
+        <constructor-arg ref="logConfig"/>
+    </bean>
+
+    <bean id="logConfig" class="com.tiefan.rct.pbs.framework.aop.log.ActionLogConfig">
+        <!--是否开启记录监控日志，默认开启-->
+        <property name="recordFlag" value="1" />
+        <!--是否开启记录返回结果详情，默认关闭-->
+        <property name="respFlag" value="0" />
+        <!--业务线,清先在业务线登记wiki登记-->
+        <property name="bizLine" value="1" />
+        <!--系统三字码-->
+        <property name="systemCode" value="${application.systemCode}" />
+        <!--系统模块码-->
+        <property name="moduleCode" value="${application.moduleCode}" />
+    </bean>
+
+    <!--<aop:config>-->
+        <!--<aop:aspect ref="logAspect" order="1">-->
+            <!--<aop:around method="aroundMethod"-->
+                        <!--pointcut="execution(* com.tiefan.cps..*Controller.*(..))-->
+                                <!--or execution(* com.tiefan.cps..*Api.*(..))-->
+                              <!--or execution(* com.tiefan.cps..*Facade.*(..))"/>-->
+        <!--</aop:aspect>-->
+    <!--</aop:config>-->
+</beans>

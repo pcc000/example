@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <bean class="com.tiefan.fbs.fsp.client.common.AppContext"/>
+
+    <bean id="fspProviderConfig" class="com.tiefan.fbs.fsp.client.config.ProviderConfig">
+        <property name="subSystem" value="${fsp.project.subName}"/>
+        <property name="packageName" value="${fsp.project.contextPath}"/>
+        <property name="maintainer" value="${fsp.project.maintainer}"/>
+        <property name="isScan" value="${fsp.project.isScan}"/>
+    </bean>
+
+    <bean id="fspRegisterConfig" class="com.tiefan.fbs.fsp.client.config.RegisterConfig">
+        <property name="registryAddress" value="${fsp.registry.address}"/>
+    </bean>
+
+    <bean id="fspConsumerConfig" class="com.tiefan.fbs.fsp.client.config.ConsumerConfig">
+        <property name="referenceService">
+            <list>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="fspCommonClient" class="com.tiefan.fbs.fsp.client.proxy.fsp.FSPCommonClient" destroy-method="stop">
+        <property name="consumerConfig" ref="fspConsumerConfig"/>
+        <property name="providerConfig" ref="fspProviderConfig"/>
+        <property name="registerConfig" ref="fspRegisterConfig"/>
+        <property name="connectTimeout" value="20"/>
+        <property name="socketTimeout" value="120"/>
+    </bean>
+
+
+
+<!--
+    <bean id="fspClientScannerConfigurer" class="com.tiefan.keel.fsp.FspClientScannerConfigurer">
+        <property name="basePackage" value="com.tiefan.cps.intf.fsp"/>
+    </bean>
+    <bean id="fspCommonClientKeel" class="com.tiefan.keel.fsp.client.WrappedFspCommonClient"
+          destroy-method="stop">
+        <property name="consumerConfig" ref="fspClientScannerConfigurer"/>
+        <property name="providerConfig" ref="fspProviderConfig"/>
+        <property name="registerConfig" ref="fspRegisterConfig"/>
+        <property name="connectTimeout" value="60000"/>
+        <property name="socketTimeout" value="60000"/>
+    </bean>
+    <bean id="fspClient" class="com.tiefan.keel.fsp.client.KeelFspClient">
+        <property name="client" ref="fspCommonClientKeel"/>
+        <property name="fspConf">
+            <bean class="com.tiefan.keel.fsp.client.impl.DefaultFspConf"/>
+        </property>
+    </bean>
+-->
+
+</beans>

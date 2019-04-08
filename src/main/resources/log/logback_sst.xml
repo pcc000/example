@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <jmxConfigurator />
+
+    <property name="logstash.path" value="/opt/tiefan/logs/tomcat/app/${tomcat_app_base}" />
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logstash.path}/cps.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${logstash.path}/cps.%d{yyyy-MM-dd}-%i.log</FileNamePattern>
+            <maxHistory>30</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <append>true</append>
+        <layout>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{32}:%L -[%tnSeq]%msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <logger name="com.tiefan.fbs.fdg" level="info" />
+    <logger name="com.tiefan.fbs.fdg.monitor" level="warn" />
+    <logger name="com.tiefan.fbs.fsp" level="info" />
+    <logger name="com.tiefan.fbs.fsp.monitor" level="warn" />
+    <logger name="com.tiefan.keel" level="info" />
+    <logger name="org.apache.curator" level="warn" />
+    <logger name="org.apache.zookeeper" level="warn" />
+
+    <logger name="com.tiefan.cps" level="info" />
+
+    <root level="WARN">
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

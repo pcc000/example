@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <context:component-scan base-package="com.tiefan.cps"/>
+    <context:component-scan base-package="com.tiefan.fbs.fts"/>
+
+    <context:annotation-config/>
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!-- rest client -->
+    <bean id="tuniuRestClient" class="com.tiefan.cps.base.rest.TuniuRestClient" />
+
+
+    <bean id="configProperties1" class="com.tiefan.cmc.client.boot.ReloadablePropertySourcesPlaceholderConfigurer" parent="abstractReloadablePlaceholderConfigurer">
+        <property name="nullValue" value="@null"/>
+        <property name="propertySourceLocators">
+            <list>
+                <ref bean="zookeeperPropertySourceLocator" />
+            </list>
+        </property>
+        <property name="locations">
+            <list>
+                <value>classpath:main-setting.properties</value>
+                <value>classpath:thread-setting.properties</value>
+            </list>
+        </property>
+        <property name="propertyMetaRegistry" ref="propertyMetaRegistry"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+
+    <bean id="configProperties2" class="com.tiefan.fbs.fdg.configurer.DiamondPropertyConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="placeholderPrefix" value="${" />
+    </bean>
+
+    <!-- 机票配置中心 -->
+    <import resource="classpath:cmc-client-config.xml"/>
+
+    <!-- 支持配置中心修改日志级别 -->
+    <bean class="com.tiefan.keel.log.LogbackDynamicSetter"/>
+
+
+    <!-- MBeans -->
+    <context:mbean-export default-domain="com.tiefan.cps" registration="replaceExisting" />
+
+
+    <bean id="aisTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="20"/>
+        <property name="maxPoolSize" value="2000"/>
+        <property name="queueCapacity" value="2000"/>
+        <property name="keepAliveSeconds" value="2000"/>
+        <property name="rejectedExecutionHandler">
+            <bean class="java.util.concurrent.ThreadPoolExecutor$AbortPolicy"/>
+        </property>
+    </bean>
+
+</beans>
